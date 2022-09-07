@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-col wrapper">
-    <div :class="{ light: content.light }" class="flex flex-col md:flex-row gap-8 md:gap-32 justify-center flex-shrink-0 p-8">
+  <div class="flex-col wrapper" :class="{ light: content.light }">
+    <div class="flex flex-col md:flex-row gap-8 md:gap-32 justify-center flex-shrink-0 p-8">
       <div
         class="flex flex-col gap-8 pb-8 md:flex-row md:gap-32 flex-shrink-0"
         style="border-bottom: 1px solid"
@@ -71,9 +71,5 @@ export default {
 }
 .wrapper.light {
   background: linear-gradient(-200deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.75)), url(@/assets/noise.png);
-  color: white !important;
-}
-.wrapper.light > * {
-  color: white !important;
 }
 </style>
