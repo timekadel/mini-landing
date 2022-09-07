@@ -7,7 +7,7 @@ MiniLanding is a minimalistic vue.js/tailwind.css based static landing page gene
 Browse to the path of your choice and run the following command from a terminal:
 
 ```
-$ git clone https://github.com/timkadel/mini-landing.git
+$ git clone https://github.com/timekadel/mini-landing.git
 ```
 
 Get to the project's root.
