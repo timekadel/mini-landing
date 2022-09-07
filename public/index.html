@@ -1,17 +1,102 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="theme-color" content="#201f4d" />
+  <link rel="icon" href="">
+  <title>Loading...</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but Roomz.tk - Landing doesn't work properly without JavaScript enabled. Please enable it to
+      continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+<style>
+  *{
+    font-family:  'Roboto', sans-serif;
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #app {
+    background: black;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  * {
+    scrollbar-color: #FFFFFF1A #0C0E0A;
+    scrollbar-width: thin;
+    z-index: 0;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+    /* transform-style: preserve-3d; */
+  }
+
+  * .invisible_scrollbar {
+    scrollbar-color: transparent;
+    scrollbar-width: none;
+    z-index: 0;
+  }
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    background: #0C0E0A;
+    width: 5px;
+    height: 5px;
+    z-index: 0;
+  }
+
+  div.invisible_scrollbar::-webkit-scrollbar {
+    background: transparent;
+    width: 0px;
+    height: 0px;
+    z-index: 0;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+
+  ::-webkit-scrollbar-track {
+    background: #0C0E0A;
+    width: 5px;
+    height: 5px;
+  }
+
+  div.invisible_scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    width: 0px;
+    height: 0px;
+    z-index: 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #FFFFFF1A;
+    width: 5px;
+    height: 5px;
+  }
+
+  div.invisible_scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+    width: 0px;
+    height: 0px;
+  }
+</style>
+
 </html>
