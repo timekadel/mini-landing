@@ -10,7 +10,7 @@ export default {
       ltr: false,
       title: "This Is A MiniLanding Section.",
       subtitle: "MiniLanding is a <b>minimalistic</b> vue.js/tailwind.css based static <b>landing page</b> generator. Its <b>no-code</b> approach allows for <b>quick and simple</b> landing page generation.",
-      hero: "/images/minilanding_logo_cropped.svg",
+      hero: "/images/minilanding_logo.svg",
       cta: [{
           title: "learn more",
           filled: false,
