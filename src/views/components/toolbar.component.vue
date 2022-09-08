@@ -57,9 +57,8 @@ export default {
   },
   data() {
     return {
-      orderedItems: [],
       displayed: false,
-      hash: this.$utils.scrollHandler.hash,
+      hash: "#" + this.items[0].name,
     };
   },
   methods: {
