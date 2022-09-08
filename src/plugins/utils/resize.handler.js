@@ -1,9 +1,5 @@
 'use strict'
 
-import {
-  throttle
-} from "lodash";
-
 const BREAKPOINTS = {
   SM: 640,
   MD: 768,
@@ -12,7 +8,6 @@ const BREAKPOINTS = {
   XXL: 1536
 }
 
-const RESIZE_THROTTLE = 250;
 var resizeHandlerInstance = null;
 
 class ResizeHandler {
@@ -26,7 +21,7 @@ class ResizeHandler {
         lg: false,
         xl: false,
       }
-      window.addEventListener("resize", throttle(this.computeBreakpoints.bind(this), RESIZE_THROTTLE));
+      window.addEventListener("resize", this.computeBreakpoints.bind(this));
       this.computeBreakpoints();
     }
   }
