@@ -8,6 +8,8 @@ const SCROLL_DIRECTIONS = {
   DOWN: 1
 }
 
+var scrollTimeout = null;
+
 class ScrollHandler {
 
   constructor() {
@@ -16,11 +18,13 @@ class ScrollHandler {
       this.scrollY = 0;
       this.scrollX = 0;
       this.touchY = 0;
+      this.scrollingFlag = false;
       this.scrollDown = SCROLL_DIRECTIONS.DOWN;
       this.scrollHandlers = [];
+      this.scrollIdleHandlers = [];
       this.hash = undefined;
       this.bound = false;
-      this.handleScroll();
+      // this.handleScroll();
     }
   }
 
@@ -35,19 +39,31 @@ class ScrollHandler {
   scrollToAnchor(anchor) {
     let el = document.getElementById(anchor.replaceAll(' ', ''));
     history.replaceState({}, null, "#" + anchor);
+    this.scrollingFlag = true;
     el.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
+      behavior: "smooth",
+      block: "start",
     })
   }
 
   bindContainer(el) {
     this.scrollEl = el;
     this.scrollEl.addEventListener("scroll", this.handleScroll.bind(this));
+    this.pushScrollHandler(this.handleScrollingState.bind(this))
   }
 
-  disableScroll(scrollState){
-    if(this.scrollEl){
+  handleScrollingState(){
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(()=>{
+      this.scrollingFlag = false;
+      this.scrollIdleHandlers.forEach(h => {
+        h.handler();
+      })
+    }, 100);
+  }
+
+  disableScroll(scrollState) {
+    if (this.scrollEl) {
       this.scrollEl.style.overflow = (scrollState ? "hidden" : "auto");
     }
   }
@@ -73,10 +89,18 @@ class ScrollHandler {
     return handlerObj.id;
   }
 
+  pushScrollIdleHandler(handler){
+    let handlerObj = {
+      handler: handler,
+      id: handlerID++
+    }
+    this.scrollIdleHandlers.push(handlerObj)
+    return handlerObj.id;
+  }
 
   removeScrollHandler(id) {
-    let index = this.scrollHandlers.findIndex(h=>h.id == id);
-    if(index > -1){
+    let index = this.scrollHandlers.findIndex(h => h.id == id);
+    if (index > -1) {
       this.scrollHandlers.splice(index)
     }
   }
