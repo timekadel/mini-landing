@@ -72,12 +72,11 @@ export default {
           if (heroImg) {
             let bb = el.getBoundingClientRect();
             let visPerc = (bb.top + bb.height) / bb.height;
-            /**
-             * Transition visibility state once
-             */
-            if (!this.inFrame) {
-              this.inFrame = visPerc >= 0 && visPerc <= 1.5;
+            this.inFrame = visPerc >= 0.5 && visPerc <= 1.5;
+            if (this.inFrame && location.hash != this.content.name) {
+              history.replaceState({}, null, "#" + this.content.name);
             }
+
             /**
              * Smooth Scroll Snap
              */
