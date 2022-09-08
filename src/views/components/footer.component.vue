@@ -6,15 +6,17 @@
         style="border-bottom: 1px solid"
         :style="{ 'border-color': content.light ? 'rgba(0,0,0,.5)' : 'rgba(255,255,255,.5)' }"
       >
-        <div class="flex gap-4">
+        <div class="flex gap-4 md:flex-row flex-col md:items-start md:justify-start md:text-left items-center justify-center text-center">
           <img v-if="content.logo" :src="content.logo" class="w-16 h-16 rounded-lg" rel="preload" />
-          <div>
+          <div class="flex flex-col gap-2 md:gap-0 md:pb-0 pb-8">
             <h1 v-if="content.name" :class="{ 'text-white': !content.light }" class="text-black text-xl font-medium">{{ content.name }}</h1>
             <p v-if="content.slogan" :class="{ 'text-white': !content.light }" class="text-black">{{ content.slogan }}</p>
             <p v-if="content.copyright" :class="{ 'text-white': !content.light }" class="text-black font-thin">©{{ content.copyright }}</p>
           </div>
         </div>
-        <div class="flex gap-4 md:gap-16 flex-wrap">
+        <div
+          class="flex gap-4 md:gap-16 flex-wrap flex-col md:flex-row md:items-start md:justify-start md:text-left items-center justify-center text-center"
+        >
           <div class="flex flex-col" v-for="(section, i) in content.sections" :key="'A' + i">
             <span :class="{ 'text-white': !content.light }" class="text-black font-medium">{{ section.name }}</span>
             <a
