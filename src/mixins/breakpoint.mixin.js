@@ -25,7 +25,6 @@ export default {
   },
   methods: {
     computeBreakpoints() {
-      console.log(this.breakpoint.lg)
       let width = parseInt(window.innerWidth);
       this.val = width;
       Object.keys(BREAKPOINTS).forEach(bpKey => {
@@ -36,7 +35,6 @@ export default {
     }
   },
   mounted() {
-    // alert(69420)
     window.addEventListener('resize', throttle(this.computeBreakpoints.bind(this), 250))
     this.computeBreakpoints();
   }
