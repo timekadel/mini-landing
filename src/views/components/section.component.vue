@@ -11,24 +11,24 @@
       <img v-if="content.hero && $utils.resizeHandler.breakpoint.md" :src="content.hero" class="hero-img z-0 w-full md:w-1/2" rel="preload" />
       <div
         class="w-full text flex flex-col max-w-xs sm:max-w-xl md:max-w-3xl gap-y-8 lg:max-w-4xl xl:max-w-6xl md:w-1/2 xl:gap-y-12"
-        :class="{ 'items-center': content.centered, shown: inFrame }"
+        :class="{ 'items-center': content.centered }"
       >
         <h1
           :class="{ 'text-white': !content.light, 'text-center': content.centered }"
-          class="opacity-0 z-10 text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-bold text-opacity-90"
+          class="z-10 text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-bold text-opacity-90"
         >
           {{ content.title }}
         </h1>
         <img v-if="content.hero && !$utils.resizeHandler.breakpoint.md" :src="content.hero" class="hero-img z-0 w-full md:w-1/2" rel="preload" />
         <h3
           :class="{ 'text-white': !content.light, 'text-center': content.centered }"
-          class="z-10 text-xl sm:text-2xl xl:text-3xl max-w-3xl font-thin text-opacity-90 opacity-0"
+          class="z-10 text-xl sm:text-2xl xl:text-3xl max-w-3xl font-thin text-opacity-90"
           v-html="content.subtitle"
         />
-        <div class="opacity-0">
+        <div>
           <img class="object-scale-down max-h-10 opacity-90" v-if="content.watermark" :src="content.watermark" rel="preload" />
         </div>
-        <div class="flex flex-row gap-4 opacity-0 items-center">
+        <div class="flex flex-row gap-4 items-center">
           <div
             v-for="(button, i) in content.cta"
             @click="goTo(button.to)"
@@ -73,20 +73,17 @@ export default {
             let bb = el.getBoundingClientRect();
             let visPerc = (bb.top + bb.height) / bb.height;
             this.inFrame = visPerc >= 0.5 && visPerc <= 1.5;
-            if (this.inFrame && location.hash != this.content.name) {
+            if (this.inFrame && location.hash != "#" + this.content.name && !this.$utils.scrollHandler.scrollingFlag) {
               history.replaceState({}, null, "#" + this.content.name);
             }
-
-            /**
-             * Smooth Scroll Snap
-             */
-            // if (visPerc >= 0.5 && visPerc <= 1.5 && window.location.hash.replaceAll("%20", "") != "#" + this.content.name.replaceAll(" ", "")) {
-            //   this.$utils.scrollHandler.scrollToAnchor(this.content.name);
-            // }
-            heroImg.style.marginTop = `${-(1.0 - visPerc) * bb.height * (this.$utils.resizeHandler.breakpoint.md ? 0.5 : 0.15)}px`;
             heroImg.style.transform = `rotateZ(${-(1.0 - visPerc) * 15}deg)`;
           }
         }
+      }
+    },
+    scrollIdleHandler() {
+      if ((this.inFrame && location.hash != "#" + this.content.name) || (!this.inFrame && location.hash == "#" + this.content.name)) {
+        this.$utils.scrollHandler.scrollToAnchor(this.content.name);
       }
     },
     goTo(anchor) {
@@ -134,8 +131,6 @@ export default {
   transition-delay: 0.8s;
 }
 .section {
-  /* scroll-snap-align: start; */
   overflow: hidden;
-  /* max-height: 100vh!important; */
 }
 </style>
