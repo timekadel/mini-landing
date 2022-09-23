@@ -13,6 +13,6 @@ export default {
   user-select: none;
 }
 .main{
-  overflow: scroll;
+  overflow: hidden;
 }
 </style>
