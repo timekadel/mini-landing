@@ -15,6 +15,10 @@ import Footer from "@/views/components/footer.component.vue";
 
 import Router from '@/plugins/router.js'
 import utils from '@/plugins/utils';
+import axios from 'axios'
+
+
+Vue.configureCompat({ RENDER_FUNCTION: false })
 
 
 Vue.use(EvaIcons)
@@ -24,5 +28,6 @@ app.component('appToolbar', Toolbar)
 .component('appSection', Section)
 .component('appFooter',Footer)
 app.config.globalProperties.$utils = utils;
+app.config.globalProperties.$http = axios;
 app.use(Router)
 app.mount('#app');
