@@ -1,0 +1,10 @@
+{
+  "visualizer": {
+    "models": {
+      "scenes": {
+        "character": "character_tk.glb",
+        "desk": "desk_tk.glb"
+      }
+    }
+  }
+}
