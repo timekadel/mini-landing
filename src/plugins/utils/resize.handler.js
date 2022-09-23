@@ -1,6 +1,7 @@
 'use strict'
 
 const BREAKPOINTS = {
+  XS: 320,
   SM: 640,
   MD: 768,
   LG: 1024,
@@ -14,13 +15,14 @@ class ResizeHandler {
 
   constructor() {
     if (!resizeHandlerInstance) {
-      this.breakpoint = {
+      this.breakpoints = {
         xs: false,
         sm: false,
         md: false,
         lg: false,
         xl: false,
       }
+      this.resizeHanlers = [],
       window.addEventListener("resize", this.computeBreakpoints.bind(this));
       this.computeBreakpoints();
     }
@@ -31,9 +33,16 @@ class ResizeHandler {
     this.val = width;
     Object.keys(BREAKPOINTS).forEach(bpKey => {
       let bpVal = BREAKPOINTS[bpKey];
-      this.breakpoint[bpKey.toLowerCase()] = width >= bpVal
+      this.breakpoints[bpKey.toLowerCase()] = width >= bpVal;
     })
-    this.breakpoint.sm = true;
+    this.resizeHanlers.forEach(handler=>{
+      handler(this.breakpoints);
+    })
+  }
+
+  pushResizeHandler(handler){
+    this.resizeHanlers.push(handler)
+    handler(this.breakpoints);
   }
 
 }
