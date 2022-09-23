@@ -93,7 +93,7 @@ class ScrollHandler {
     if (e.type === "wheel") {
       delta = 4 * e.deltaY / Math.abs(e.deltaY);
     } else {
-      delta = 60 * (this.touchStart - e.touches[0].clientY) / screen.height;
+      delta = 240 * (this.touchStart - e.touches[0].clientY) / screen.height;
       this.touchStart = e.touches[0].clientY
     }
     this.wheelHandlers.forEach(h => {

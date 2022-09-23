@@ -43,10 +43,10 @@ class DollyStop {
     var i = 0;
     DollyInstance.controlsHandle.enableRotate = false;
     const scrollTargethandler = ScrollHandler.pushWheelHandler((delta) => {
-      if (i >= 0 && i <= 100) {
+      if (i >= 0 && i < 100) {
         i = Math.min(Math.max(i + delta, 0), 101);
         DollyInstance.update(i / 100);
-      } else if (i > 100) {
+      } else if (i >= 100) {
         DollyInstance.update(1);
         DollyInstance.controlsHandle.enableRotate = true;
         ScrollHandler.removeWheelHandler(scrollTargethandler);
