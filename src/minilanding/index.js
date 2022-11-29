@@ -1,26 +1,29 @@
-import Home from "@/views/components/home.component.vue"
-import { markRaw } from "vue"
+import Home from "@/views/components/custom/sections/home.component.vue"
+import {
+  markRaw
+} from "vue"
 
 export default {
   title: "Timé Kadel's portfolio",
   hideTitle: true,
-  logo: "/images/timekadel.svg",
+  logo: "/images/tk.svg",
   toolbarDefaultDisplayed: false,
-  sections: [
-    {
+  sections: [{
       name: "About Me",
+      icon: "eye-outline",
       toolbar: true,
       fullHeiht: true,
       light: false,
       custom: {
         component: markRaw(Home),
-        props:{}
+        props: {}
       }
     },
     {
       name: "Selected Work",
       ltr: true,
       toolbar: true,
+      icon: "activity-outline",
       title: "Autonomous Stage Lighting Systems.",
       subtitle: "<b>ASLS</b> is an <b>organization</b> which specialises in the <b>Research & Development</b> of innovative and <b>open source</b> solutions for <b>show control</b> and show automation.",
       hero: "/images/asls_xs.png",
@@ -32,7 +35,7 @@ export default {
         {
           title: "learn more",
           filled: true,
-          to: "https://asls.timekadel.com"
+          to: "/asls"
         }
       ]
     },
@@ -54,7 +57,7 @@ export default {
         {
           title: "learn more",
           filled: true,
-          to: "https://roomz.timekadel.com"
+          to: "/roomz"
         }
       ]
     }, {
@@ -74,7 +77,7 @@ export default {
         {
           title: "learn more",
           filled: true,
-          to: "https://lazy.timekadel.com"
+          to: "/lazy"
         }
       ]
     }, {
@@ -87,31 +90,27 @@ export default {
       subtitle: "Minimalistic <b>vue.js/tailwind.css</b> based static <b>landing page</b> generator. Its <b>no-code</b> approach allows for <b>quick and easy</b> landing page generation.",
       hero: "/images/minilanding_logo_dark.svg",
       cta: [{
-          title: "back to top",
+          title: "get in touch",
           filled: false,
-          to: "#SelectedWork"
+          to: "#Contact"
         },
         {
           title: "learn more",
           filled: true,
-          to: "https://minilanding.timekadel.com"
+          to: "/ml"
         }
       ]
     },
   ],
   contact: {
     title: "Get in touch",
-    subtitle: "<b>Feel free</b> to get in touch with me.",
-    hero: "/images/minilanding_logo.svg",
-    ltr: true,
+    subtitle: "Don't be shy, get in touch with me.",
+    icon: "message-circle-outline",
+    formSubmitUrl: "https://formsubmit.co/ajax/eb166882bfe47ee1704efb785a915f0e",
     toolbar: true,
-    type: "contact",
-    onSubmit: ()=>{
-      
-    }
   },
   footer: {
-    logo: "/images/timekadel.svg",
+    logo: "/images/tk.svg",
     name: "timekadel.com",
     light: false,
     slogan: "Timé Kadel's personal website.",
@@ -136,7 +135,7 @@ export default {
         }, {
           name: "deviceframes.com",
           to: "https://deviceframes.com/"
-        },{
+        }, {
           name: "craftwork",
           to: "https://craftwork.design/"
         }]
