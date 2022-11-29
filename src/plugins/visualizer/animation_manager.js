@@ -38,10 +38,12 @@
     * @param {Animation} animation an animation instance
     */
    dispose(animation) {
-     let id = animation.id; //Fetching the animation's id
-     let index = AnimationManager._getAnimationIndex(id, this.animations); //Finding the animation's index within the instance's array
-     if (index) {
-       this.animations.splice(index, 1)
+     if (animation) {
+       let id = animation.id; //Fetching the animation's id
+       let index = AnimationManager._getAnimationIndex(id, this.animations); //Finding the animation's index within the instance's array
+       if (index) {
+         this.animations.splice(index, 1)
+       }
      }
    }
 
