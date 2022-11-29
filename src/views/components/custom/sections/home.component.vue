@@ -1,7 +1,9 @@
 <template>
-  <div class="absolute top-0 flex-1 w-screen h-full flex">
-    <HomeHTMLSprite />
-    <LabelHTMLSprite />
+  <div class="absolute flex-1 w-screen h-full flex">
+    <IntroHTMLSprite />
+    <AgeHTMLSprite />
+    <FireworksHTMLSprite />
+    <CVHTMLSprite />
     <Transition name="fade">
       <div
         ref="loader"
@@ -9,8 +11,8 @@
         v-if="loading.state"
         class="bg-black fixed top-0 bottom-0 md:p-16 h-full w-full z-100 flex flex-col gap-y-8 xl:gap-y-12 justify-center items-center"
       >
-        <img class="loader_logo" src="/images/timekadel.svg" width="150" />
-        <h3 class="text-white z-10 text-xl sm:text-2xl xl:text-3xl max-w-xl font-thin text-opacity-90 opacity-100">
+        <img class="loader_logo" src="/images/tk.svg" width="150" />
+        <h3 class="text-white mt-8 z-10 text-xl xl:text-3xl max-w-xl font-light text-opacity-90 opacity-100 uppercase">
           {{ loading.message }}... {{ loading.value }}%
         </h3>
       </div>
@@ -74,11 +76,15 @@
 
 <script>
 import Visualizer from "@/plugins/visualizer/visualizer.js";
-import HomeHTMLSprite from "./home.htmlsprite.component.vue";
-import LabelHTMLSprite from "./label.htmlsprite.component.vue";
+import IntroHTMLSprite from "../HTMLSprites/intro.htmlsprite.component.vue";
+import AgeHTMLSprite from "../HTMLSprites/age.htmlsprite.component.vue";
+import FireworksHTMLSprite from "../HTMLSprites/fireworks.htmlsprite.component.vue";
+import CVHTMLSprite from "../HTMLSprites/cv.htmlsprite.component.vue";
 import DollyInstance from "@/plugins/visualizer/dolly.js";
 import EventBus from "@/plugins/eventbus.js";
 import VUE3DRenderer from "@/plugins/visualizer/vue3d_renderer.js";
+import Fireworks from "@/plugins/visualizer/fireworks.js";
+import Terminal from  "@/plugins/visualizer/terminal.canvas.js"
 
 const ANIMATION_STATES = {
   OVERVIEW: 0,
@@ -100,8 +106,10 @@ export default {
     };
   },
   components: {
-    HomeHTMLSprite,
-    LabelHTMLSprite,
+    IntroHTMLSprite,
+    AgeHTMLSprite,
+    FireworksHTMLSprite,
+    CVHTMLSprite,
   },
   methods: {
     dollyPrev() {
@@ -130,38 +138,73 @@ export default {
     },
     setupDollyStopsCallbacks() {
       DollyInstance.getStop("overview").onEnd = () => {
-        DollyInstance.travelToStop("target", 1);
+        DollyInstance.travelToStop("introduction", 1);
         this.$utils.scrollHandler.disableScroll(true);
       };
-      DollyInstance.getStop("target").onStart = () => {
+      DollyInstance.getStop("introduction").onStart = () => {
         if (this.state !== ANIMATION_STATES.OVERVIEW) {
           this.state = ANIMATION_STATES.TARGET;
         }
       };
-      DollyInstance.getStop("target").onEnd = () => {
+      DollyInstance.getStop("introduction").onEnd = () => {
         this.state = ANIMATION_STATES.TARGET;
-        VUE3DRenderer.getHTMLSpriteHandle("HomeHTMLSprite").vInstanceHandle.displayed = true;
+        VUE3DRenderer.getHTMLSpriteHandle("IntroHTMLSprite").vInstanceHandle.displayed = true;
         EventBus.$emit("toolbar_display-state", true);
       };
+      DollyInstance.getStop("introduction").onExit = () => {
+        this.state = ANIMATION_STATES.ABOUT;
+        VUE3DRenderer.getHTMLSpriteHandle("IntroHTMLSprite").vInstanceHandle.displayed = false;
+      };
+      DollyInstance.getStop("fireworks").onStart = () => {
+        Fireworks.start();
+      };
+      DollyInstance.getStop("fireworks").onEnd = () => {
+        VUE3DRenderer.getHTMLSpriteHandle("FireworksHTMLSprite").vInstanceHandle.displayed = true;
+      };
+      DollyInstance.getStop("fireworks").onExit = () => {
+        VUE3DRenderer.getHTMLSpriteHandle("FireworksHTMLSprite").vInstanceHandle.displayed = false;
+        Fireworks.stop();
+      };
       DollyInstance.getStop("laptop").onStart = () => {
-        this.state = ANIMATION_STATES.ABOUT;
+        Terminal.restart();
       };
-      DollyInstance.getStop("character").onStart = () => {
-        this.state = ANIMATION_STATES.ABOUT;
+      DollyInstance.getStop("curriculum").onEnd = () => {
+        VUE3DRenderer.getHTMLSpriteHandle("CVHTMLSprite").vInstanceHandle.displayed = true;
       };
-      DollyInstance.getStop("character").onEnd = () => {
-        VUE3DRenderer.getHTMLSpriteHandle("LabelHTMLSprite").vInstanceHandle.displayed = true;
+      DollyInstance.getStop("curriculum").onExit = () => {
+        VUE3DRenderer.getHTMLSpriteHandle("CVHTMLSprite").vInstanceHandle.displayed = false;
       };
-      DollyInstance.getStop("character").onExit = () => {
-        VUE3DRenderer.getHTMLSpriteHandle("LabelHTMLSprite").vInstanceHandle.displayed = false;
+      DollyInstance.getStop("age").onEnd = () => {
+        VUE3DRenderer.getHTMLSpriteHandle("AgeHTMLSprite").vInstanceHandle.displayed = true;
+      };
+      DollyInstance.getStop("age").onExit = () => {
+        VUE3DRenderer.getHTMLSpriteHandle("AgeHTMLSprite").vInstanceHandle.displayed = false;
       };
     },
+    handleRenderingState() {
+      let el = this.$el;
+      if (el) {
+        let bb = el.getBoundingClientRect();
+        if (bb.x + bb.width < 0 || bb.y + bb.height < 0 || bb.x > window.innerWidth || bb.y > window.innerHeight) {
+          Visualizer.stopRender();
+        } else {
+          Visualizer.startRender();
+        }
+      }
+    },
+  },
+  deactivated() {
+    this.$utils.scrollHandler.destroyNamespaceHandlers("home");
+  },
+  activated() {
+    this.$utils.scrollHandler.pushScrollHandler(this.handleRenderingState, "home");
   },
   async mounted() {
     try {
+      EventBus.$emit("toolbar_display-state", false);
       document.body.appendChild(this.$refs.loader);
       await this.initVisualizer();
-      this.$utils.scrollHandler.scrollToAnchor("AboutMe", true)
+      this.$utils.scrollHandler.scrollToAnchor("AboutMe", true);
       this.setupDollyStopsCallbacks();
       DollyInstance.travelToStop("overview");
       this.loading = false;
@@ -173,7 +216,12 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+  height: calc(100% - 64px);
+  padding: 0;
+}
 .visualizer {
+  padding: 0;
   top: 0px;
   left: 0px;
   height: 100% !important;
@@ -187,25 +235,6 @@ export default {
 }
 .scene {
   perspective: 600px;
-}
-.card {
-  width: 224px;
-  height: 50px;
-  position: relative;
-  transition: transform 0.25s ease-in-out;
-  transform-style: preserve-3d;
-}
-.card_face {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  backface-visibility: hidden;
-}
-.card_face.back {
-  transform: RotateX(180deg);
-}
-.card.flipped {
-  transform: rotateX(180deg);
 }
 .loader {
   background-position: 14px 0, 0 0;

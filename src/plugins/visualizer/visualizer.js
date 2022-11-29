@@ -30,7 +30,7 @@ import DollyInstance from './dolly.js';
 import CharacterController from './character.controller.js';
 import VUE3DRenderer from './vue3d_renderer.js';
 import Terminal from './terminal.canvas.js'
-
+// import Fireworks from './fireworks';
 
 var visualizerInstance = null;
 
@@ -151,7 +151,7 @@ class Visualizer extends EventEmitter {
    */
   prepareCamera() {
     var aspect = 1;
-    this.camera = new THREE.PerspectiveCamera(45, aspect, .1, 40);
+    this.camera = new THREE.PerspectiveCamera(45, aspect, .2, 40);
     this.camera.up.set(0, 0, 1)
     this.camera.position.y = 11.53;
     this.camera.position.z = 3.57;
@@ -170,10 +170,6 @@ class Visualizer extends EventEmitter {
     this.controls.maxDistance = 20;
     this.controls.enableDamping = true;
     this.controls.dampingFactor = .1
-    // this.controls.minPolarAngle = Math.PI / 8;
-    // this.controls.maxPolarAngle = Math.PI;
-    // this.controls.minAzimuthAngle = Math.PI / 2;
-    // this.controls.maxAzimuthAngle = 1.2 * Math.PI;
     this.controls.rotateSpeed = .5;
     this.controls.enableZoom = false;
 
@@ -306,6 +302,15 @@ class Visualizer extends EventEmitter {
     const character_model = ModelInstancer.models.visualizer.models.scenes.character;
     const desk_model = ModelInstancer.models.visualizer.models.scenes.desk;
 
+    const curriculum = new THREE.Mesh(
+      new THREE.PlaneGeometry(.2, .282),
+      new THREE.MeshPhongMaterial({
+        color: "white",
+        map: TXLoader.load("/visualizer/textures/CV_FR.png")
+      })
+    )
+    curriculum.name = "curriculum"
+
     character_model.scene.name = "character_model";
     desk_model.scene.name = "desk_model";
 
@@ -324,14 +329,17 @@ class Visualizer extends EventEmitter {
         object.receiveShadow = true;
         object.material.shadowSide = THREE.BackSide;
         object.material.side = THREE.FrontSide;
-        object.material.roughness = 1;
-        object.material.roughnessMap = null;
+        // object.material.roughness = 1;
+        // object.material.roughnessMap = null;
       }
     })
 
     character_model.scene.rotation.set(Math.PI / 2.0, 0, 0);
     character_model.scene.position.set(.8, .65, .05);
     character_model.scene.scale.set(1.2, 1.2, 1.2);
+
+    curriculum.rotation.set(0, 0, Math.PI);
+    curriculum.position.set(.5, 0, .91);
 
     desk_model.scene.rotation.set(Math.PI / 2.0, 0, 0);
     desk_model.scene.position.set(.8, .65, .05);
@@ -340,37 +348,39 @@ class Visualizer extends EventEmitter {
     this.characterController = new CharacterController(character_model, this.camera, this.bokehPass);
     this.characterController.init();
 
-    SceneManager.add(character_model.scene, desk_model.scene);
+    SceneManager.add(character_model.scene, desk_model.scene, curriculum);
 
   }
 
   storeSceneAssetsReferences() {
     this.scene_assets = {
       laptop_screen: SceneManager.getObjectByName("screen").children[1],
-      character: SceneManager.getObjectByName("character_model")
+      skateboard: SceneManager.getObjectByName("skateboard"),
+      character: SceneManager.getObjectByName("character_model"),
+      curriculum: SceneManager.getObjectByName("curriculum")
     }
   }
 
   setupDynamicTextures() {
 
     this.dynamicTextures = {
-      terminal: new Terminal(700, 300),
+      terminal: Terminal,
     }
     this.scene_assets.laptop_screen.material.map = this.dynamicTextures.terminal.texture;
     this.dynamicTextures.terminal.run(`
-    ██╗    ███╗   ███╗ █████╗ ██╗  ██╗███████╗                          
-    ██║    ████╗ ████║██╔══██╗██║ ██╔╝██╔════╝                          
-    ██║    ██╔████╔██║███████║█████╔╝ █████╗                            
-    ██║    ██║╚██╔╝██║██╔══██║██╔═██╗ ██╔══╝                            
-    ██║    ██║ ╚═╝ ██║██║  ██║██║  ██╗███████╗                          
-    ╚═╝    ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝                          
-                                                                        
-    ███████╗ ██████╗ ███████╗████████╗██╗    ██╗ █████╗ ██████╗ ███████╗
-    ██╔════╝██╔═══██╗██╔════╝╚══██╔══╝██║    ██║██╔══██╗██╔══██╗██╔════╝
-    ███████╗██║   ██║█████╗     ██║   ██║ █╗ ██║███████║██████╔╝█████╗  
-    ╚════██║██║   ██║██╔══╝     ██║   ██║███╗██║██╔══██║██╔══██╗██╔══╝  
-    ███████║╚██████╔╝██║        ██║   ╚███╔███╔╝██║  ██║██║  ██║███████╗
-    ╚══════╝ ╚═════╝ ╚═╝        ╚═╝    ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝`,
+    ██╗    ██╗      ██████╗ ██╗   ██╗███████╗                                                              
+    ██║    ██║     ██╔═══██╗██║   ██║██╔════╝                                                              
+    ██║    ██║     ██║   ██║██║   ██║█████╗                                                                
+    ██║    ██║     ██║   ██║╚██╗ ██╔╝██╔══╝                                                                
+    ██║    ███████╗╚██████╔╝ ╚████╔╝ ███████╗                                                              
+    ╚═╝    ╚══════╝ ╚═════╝   ╚═══╝  ╚══════╝                                                              
+                                                                                                           
+     ██████╗██╗   ██╗██████╗ ███████╗██████╗ ███████╗███████╗ ██████╗██╗   ██╗██████╗ ██╗████████╗██╗   ██╗
+    ██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗██╔════╝██╔════╝██╔════╝██║   ██║██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝
+    ██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝███████╗█████╗  ██║     ██║   ██║██████╔╝██║   ██║    ╚████╔╝ 
+    ██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗╚════██║██╔══╝  ██║     ██║   ██║██╔══██╗██║   ██║     ╚██╔╝  
+    ╚██████╗   ██║   ██████╔╝███████╗██║  ██║███████║███████╗╚██████╗╚██████╔╝██║  ██║██║   ██║      ██║   
+     ╚═════╝   ╚═╝   ╚═════╝ ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝   ╚═╝      ╚═╝`,
       "█ time@kadel:~# ",
       [
         "./hack_the_planet.sh",
@@ -396,7 +406,14 @@ class Visualizer extends EventEmitter {
         color: 'white'
       })
     );
+    const backTargetHandle = new THREE.Mesh(
+      new THREE.BoxGeometry(1, 1, 1, 1, 1, 1),
+      new THREE.MeshBasicMaterial({
+        color: 'white'
+      })
+    );
     centerTargetHandle.position.copy(VUE3DRenderer.HTMLSprites[0].CSS3DObjectHandle.position)
+    backTargetHandle.position.set(0,0,4.5)
     centerTargetHandle.position.setY(0)
     centerTargetHandle.translateZ(-2.3)
     DollyInstance.addStop({
@@ -405,19 +422,34 @@ class Visualizer extends EventEmitter {
       target: this.characterController.characterHandle.head,
     })
     DollyInstance.addStop({
-      name: "target",
-      position: new THREE.Vector3(0.43, 21, 7),
+      name: "introduction",
+      position: new THREE.Vector3(0.43, 22, 7),
       target: centerTargetHandle,
     })
     DollyInstance.addStop({
-      name: "character",
-      position: new THREE.Vector3(-1, -3.14, 1.5),
+      name: "age",
+      position: new THREE.Vector3(-1, -4, 1.5),
       target: this.scene_assets.laptop_screen,
+    })
+    DollyInstance.addStop({
+      name: "fireworks",
+      position: new THREE.Vector3(-5, -14, 2.5),
+      target: backTargetHandle,
+    })
+    DollyInstance.addStop({
+      name: "skateboard",
+      position: new THREE.Vector3(-2, -.5, 1),
+      target: this.scene_assets.skateboard,
     })
     DollyInstance.addStop({
       name: "laptop",
       position: new THREE.Vector3(.94, .6, 1.67),
       target: this.scene_assets.laptop_screen,
+    })
+    DollyInstance.addStop({
+      name: "curriculum",
+      position: new THREE.Vector3(.5, .1, 1.5),
+      target: this.scene_assets.curriculum,
     })
   }
 
@@ -441,6 +473,7 @@ class Visualizer extends EventEmitter {
     this.loadingState++;
     this.startRender();
 
+
     await new Promise(resolve => {
       setTimeout(() => {
         this.renderer.shadowMap.needsUpdate = true;
@@ -449,6 +482,7 @@ class Visualizer extends EventEmitter {
         VUE3DRenderer.renderHTMLSprites();
         this.prepareDollyStops();
         this.loadingState++;
+
         resolve();
       })
     });

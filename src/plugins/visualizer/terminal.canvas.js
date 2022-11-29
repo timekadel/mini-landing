@@ -3,15 +3,19 @@
 import * as THREE from 'three'
 
 
-export default class Terminal {
+class Terminal {
 
   constructor(width, height) {
-    this.width = width;
-    this.height = height;
-    this.canvas = null;
-    this.texture = null;
-    this.timeoutHandle = null;
-    this.init();
+    if (!terminalInstance) {
+      this.width = width;
+      this.height = height;
+      this.canvas = null;
+      this.texture = null;
+      this.timeoutHandle = null;
+      this.init();
+      terminalInstance = this;
+    }
+    return terminalInstance
   }
 
 
@@ -28,19 +32,31 @@ export default class Terminal {
     this.canvas.ctx.fillRect(0, 0, this.width, this.height);
     this.texture = new THREE.CanvasTexture(this.canvas);
     this.texture.flipY = false;
+    this.running = false;
   }
 
-  run(header = "HelloWorld", command_prefix = "root@timekadel", commands = []) {
-    this.stop();
-    this.header = header.split("\n");
-    this.command_prefix = command_prefix;
-    this.commands = commands;
-    this.print();
+  run(header = "HelloWorld", command_prefix = "dev@timekadel", commands = []) {
+    if (!this.running) {
+      this.stop();
+      this.header = header.split("\n");
+      this.command_prefix = command_prefix;
+      this.commands = commands;
+      this.print();
+      this.runnning = true;
+    }
+  }
+
+  restart() {
+    if (this.running) {
+      this.stop();
+      this.run(this.header, this.command_prefix, this.commands)
+    }
   }
 
   stop() {
-    if (this.timeoutHandle) {
+    if (this.timeoutHandle && this.runnning) {
       clearTimeout(this.timeoutHandle);
+      this.running = false
     }
   }
 
@@ -85,3 +101,6 @@ export default class Terminal {
 
 
 }
+
+var terminalInstance = new Terminal(700, 300);
+export default terminalInstance;
