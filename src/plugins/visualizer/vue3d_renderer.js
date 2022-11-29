@@ -60,7 +60,6 @@ class HTMLSprite {
 
   constructor(vInstance, scene) {
     this.el = vInstance.$el;
-    console.log(vInstance)
     this.vInstanceHandle = vInstance;
     this.CSS3DObjectHandle = null;
     this.position = vInstance.$data.position;
