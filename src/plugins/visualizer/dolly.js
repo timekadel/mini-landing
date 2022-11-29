@@ -21,6 +21,7 @@ class DollyStop {
     this.onExit = data.onExit || (() => {});
     this.id = DollyStopId++;
     this.duration = data.duration || 1000;
+    this.animationHandle = null;
   }
 
   setFocus(mode = FOCUS_MODES.AUTO, duration = 1000, easing = true) {
@@ -56,18 +57,30 @@ class DollyStop {
   }
 
   autoFocus(duration, easing) {
-    DollyInstance.update(0);
-    const animationHandle = AnimationManager.add((t) => {
-      if (t * 1000 >= duration) {
-        AnimationManager.dispose(animationHandle);
-        DollyInstance.update(1);
-        this.onEnd()
-      } else {
-        let perc = (t * 1000 / duration)
-        let eased = easing ? -(Math.cos(Math.PI * (perc)) - 1) / 2 : perc;
-        DollyInstance.update(eased);
-      }
-    })
+    if (!this.animationHandle) {
+      DollyInstance.update(0);
+      this.animationHandle = AnimationManager.add((t) => {
+        if (t * 1000 >= duration) {
+          AnimationManager.dispose(this.animationHandle);
+          this.animationHandle = null;
+          DollyInstance.update(1);
+          this.onEnd()
+        } else {
+          let perc = (t * 1000 / duration)
+          let eased = easing ? -(Math.cos(Math.PI * (perc)) - 1) / 2 : perc;
+          DollyInstance.update(eased);
+        }
+      })
+    }
+  }
+
+  cancel() {
+    if (this.animationHandle) {
+      AnimationManager.dispose(this.animationHandle);
+      this.animationHandle = null;
+    }
+    this.onExit();
+
   }
 
 }
@@ -108,9 +121,9 @@ class Dolly {
   }
 
   travelToStop(name, mode = FOCUS_MODES.AUTO, duration = 1000, easing = true) {
-    let stop = this.stops.find(stop => stop.name === name);
+    const stop = this.stops.find(s => s.name === name);
     if (this.stop) {
-      this.stop.onExit();
+      this.stop.cancel();
     }
     if (stop) {
       this.stop = stop;
@@ -169,11 +182,6 @@ class Dolly {
       this.controlsHandle.target.setX(this.cameraTarget.start.x + this.cameraTarget.delta.x * travelPercent);
       this.controlsHandle.target.setY(this.cameraTarget.start.y + this.cameraTarget.delta.y * travelPercent);
       this.controlsHandle.target.setZ(this.cameraTarget.start.z + this.cameraTarget.delta.z * travelPercent);
-      if (this.bokehHandle) {
-        let lfocus = this.cameraPosition.end.distanceTo(this.cameraTarget.end) * travelPercent;
-        this.bokehHandle.uniforms['focus'].value = lfocus;
-        this.bokehHandle.uniforms['aperture'].value = 0.022 / (lfocus);
-      }
     } else {
       this.cameraHandle.position.copy(this.cameraPosition.end);
       this.controlsHandle.target.copy(this.cameraTarget.end);
