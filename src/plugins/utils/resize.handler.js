@@ -10,6 +10,7 @@ const BREAKPOINTS = {
 }
 
 var resizeHandlerInstance = null;
+var handlerID = 0;
 
 class ResizeHandler {
 
@@ -35,14 +36,38 @@ class ResizeHandler {
       let bpVal = BREAKPOINTS[bpKey];
       this.breakpoints[bpKey.toLowerCase()] = width >= bpVal;
     })
-    this.resizeHanlers.forEach(handler=>{
-      handler(this.breakpoints);
+    this.resizeHanlers.forEach(h=>{
+      h.handler(this.breakpoints);
     })
   }
 
-  pushResizeHandler(handler){
-    this.resizeHanlers.push(handler)
-    handler(this.breakpoints);
+  pushResizeHandler(handler, namespace) {
+    let handlerObj = {
+      handler: handler,
+      id: handlerID++,
+      namespace: namespace
+    }
+    this.resizeHanlers.push(handlerObj)
+    return handlerObj.id;
+  }
+
+  removeResizeHandler(id) {
+    let index = this.resizeHanlers.findIndex(h => h.id == id);
+    if (index > -1) {
+      this.resizeHanlers.splice(index)
+    }
+  }
+
+  /**
+   * Well that seem's like a massive waste of event-loop time...
+   * TODO: Find a better approach...
+   * eg. loop handlers from end to start to avoid indexion error due to previous splicing
+   */
+   destroyNamespaceHandlers(namespace){
+    let nsResizeHandlers = this.resizeHanlers.filter(h=>h.namespace === namespace);
+    nsResizeHandlers.forEach(h=>{
+      this.removeResizeHandler(h.id);
+    })
   }
 
 }
