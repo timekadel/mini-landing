@@ -7,12 +7,12 @@
       {{ content.title }}
     </h1>
     <h3 :class="{ 'text-white': !content.light }" class="text-center z-10 text-xl sm:text-2xl xl:text-3xl max-w-3xl font-thin text-opacity-90">
-      Don't be shy, get in touch with me.
+      {{ content.subtitle }}
     </h3>
     <div class="flex flex-col gap-5 w-full items-center">
       <div class="w-full flex flex-col gap-2">
         <input
-          @input="formValidity.email = true"
+          @input="formValidity.email = true;sendState = 0;"
           :class="{ invalid: !formValidity.email }"
           v-model="email"
           placeholder="email@domain.com"
@@ -26,7 +26,7 @@
       </div>
       <div class="w-full flex flex-col gap-2">
         <input
-          @input="formValidity.name = true"
+          @input="formValidity.name = true;sendState = 0;"
           :class="{ invalid: !formValidity.name }"
           v-model="name"
           placeholder="Your Name"
@@ -40,7 +40,7 @@
       </div>
       <div class="w-full flex flex-col gap-2">
         <textarea
-          @input="formValidity.message = true"
+          @input="formValidity.message = true;sendState = 0;"
           :class="{ invalid: !formValidity.message }"
           v-model="message"
           placeholder="Your Message"
@@ -56,16 +56,21 @@
       @click="submit"
       class="text-white border-2 border-white cursor-pointer transition-all rounded-full text-lg font-medium uppercase pl-8 pr-8 opacity-70 p-2"
     >
-      <template v-if="sendState === 0">submit message</template>
+      <div v-if="sendState === -1" class="error_msg">retry</div>
+      <template v-else-if="sendState === 0 || sendState === 2">submit message</template>
       <div v-else-if="sendState === 1" class="loader" />
     </div>
+    <p v-if="sendState === -1" class="text-xs font-light" style="color: #ec1e58">An error occured while sending your message...</p>
+    <p v-if="sendState === 2" class="text-xs font-light" style="color: rgb(61, 221, 168)">Your message has been sent !</p>
   </div>
 </template>
 
 <script>
 const SEND_STATES = {
+  ERROR: -1,
   IDLE: 0,
   SENDING: 1,
+  SENT: 2
 };
 
 export default {
@@ -88,10 +93,10 @@ export default {
   },
   methods: {
     submit() {
-      if (this.validate() && this.sendState === SEND_STATES.IDLE) {
+      if (this.validate() && this.sendState === SEND_STATES.IDLE || this.sendState === SEND_STATES.ERROR) {
         this.sendState = SEND_STATES.SENDING;
         this.$http
-          .post("https://formsubmit.co/ajax/eb166882bfe47ee1704efb785a915f0e", {
+          .post(this.content.formSubmitUrl, {
             name: this.name,
             email: this.email,
             message: this.message,
@@ -100,12 +105,11 @@ export default {
             _template: "table",
           })
           .then(() => {
-            this.sendState = SEND_STATES.IDLE;
+            this.sendState = SEND_STATES.SENT;
             this.resetForm();
           })
           .catch(() => {
-            this.sendState = SEND_STATES.IDLE;
-            this.resetForm();
+            this.sendState = SEND_STATES.ERROR;
           });
       }
     },
@@ -121,7 +125,6 @@ export default {
       this.validateEmail();
       this.validateMessage();
       this.validateName();
-      console.log(this.formValidity);
       return !Object.values(this.formValidity).includes(false);
     },
     validateEmail() {
