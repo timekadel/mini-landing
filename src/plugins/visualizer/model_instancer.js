@@ -1,18 +1,11 @@
-// var THREE = window.THREE = require('three');
-// require('three/examples/js/loaders/GLTFLoader');
-
-// import * as THREE from "three"
-
 import {
 	GLTFLoader
 } from 'three/examples/jsm/loaders/GLTFLoader.js'
-// import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-// import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import axios from 'axios';
 
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
+dracoLoader.setDecoderPath('libs/gltf/');
 
 /**
  * Global handler to GLTF loader
@@ -22,8 +15,6 @@ dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
 const loader = new GLTFLoader()
 .setCrossOrigin('anonymous')
 .setDRACOLoader( dracoLoader  )
-// .setKTX2Loader( KTX2Loader)
-// .setMeshoptDecoder( MeshoptDecoder );
 
 /**
  * @class
