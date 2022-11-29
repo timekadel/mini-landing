@@ -6,23 +6,30 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="theme-color" content="#201f4d" />
+  <meta name="description" content="<%= htmlWebpackPlugin.options.description.replace('\n','') %>" />
+  <meta name="keywords" content=" htmlWebpackPlugin.options.keywprds.replace('\n','') "/>
+  <meta property="og:url" content="<%= htmlWebpackPlugin.options.url %>" />
+  <meta property="og:title" content="<%= htmlWebpackPlugin.options.title %>" />
+  <meta property="og:description" content="<%= htmlWebpackPlugin.options.description.replace('\n','') %>" />
+  <meta property="og:image" content="<%= htmlWebpackPlugin.options.image %>" />
   <link rel="icon" href="data:,">
-  <title>Loading...</title>
+  <title><%= htmlWebpackPlugin.options.title %></title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
 </head>
 
 <body>
   <noscript>
-    <strong>We're sorry but Roomz.tk - Landing doesn't work properly without JavaScript enabled. Please enable it to
+    <strong>We're sorry but MiniLanding doesn't work properly without JavaScript enabled. Please enable it to
       continue.</strong>
   </noscript>
   <div id="app"></div>
   <!-- built files will be auto injected -->
 </body>
 <style>
-  *{
-    font-family:  'Roboto', sans-serif;
+  * {
+    font-family: 'Roboto', sans-serif;
   }
+
   html,
   body {
     margin: 0;
@@ -30,6 +37,7 @@
     height: 100%;
     width: 100%;
     overflow: hidden;
+    overflow-y: auto
   }
 
   #app {
@@ -44,7 +52,6 @@
     z-index: 0;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;
-    /* transform-style: preserve-3d; */
   }
 
   * .invisible_scrollbar {
