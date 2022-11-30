@@ -158,7 +158,7 @@ Sections are part of MiniLanding's key features. They're used to describe unique
     hero: "/assets/hero_section1.png",
     cta: CTA_CONFIGURATION,
     light: false,
-    //color: "#0E0E0E",
+    color: "#0E0E0E"
     ltr: false,
   },
   //Next sections configurations
@@ -306,8 +306,8 @@ Social links should be configured as follow:
 ```js
 social: {
   github: "https://github.com/github_profile",
-  linkedin: "https://fr.linkedin.com/in/linkedin_id",
-  facebook: "https://www.facebook.com/profile.id",
+  linkedin: "https://fr.linkedin.com/in/linkedin_id"
+  facebook: "https://www.facebook.com/profile.id"
   twitter: "https://twitter.com/TwitterId",
 }
 ``` 
