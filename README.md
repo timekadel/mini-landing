@@ -1,10 +1,5 @@
-
-
-# What is MiniLanding ?
-
-MiniLanding is a minimalistic vue.js/tailwind.css based static landing page generator. Its no-code approach allows for quick and simple landing page generation.
-
 - [What is MiniLanding ?](#what-is-minilanding-)
+- [Live Demos](#live-demos)
 - [Installation](#installation)
   - [Start Environment locally](#start-environment-locally)
   - [Build For Production](#build-for-production)
@@ -22,6 +17,17 @@ MiniLanding is a minimalistic vue.js/tailwind.css based static landing page gene
       - [Social](#social)
     - [Contact Form](#contact-form)
 
+# What is MiniLanding ?
+
+MiniLanding is a minimalistic vue.js/tailwind.css based static landing page generator. Its no-code approach allows for quick and simple landing page generation.
+
+# Live Demos
+
+The following websites are built using MiniLanding:
+
+[timekadel.com](https://timekadel.com)  - Timé Kadel's personal website
+
+> Feel free to contact me if you'd like to see your MiniLanding implementation listed above.
 
 # Installation
 
@@ -168,7 +174,7 @@ Sections are part of MiniLanding's key features. They're used to describe unique
 
 | Parameter | Type      | Description                                                                                      |
 | --------- | --------- | ------------------------------------------------------------------------------------------------ |
-| name      | String    | Section Name used internally for anchoring and referencing. **MUST BE UNIQUE TO PAGE!**          |
+| name      | String    | Uniquely identified [Section Name](#name) used internally for anchoring and referencing.       |
 | toolbar   | Boolean   | Whether section should appear on toolbar's navigation.                                           |
 | gradient  | Object    | A [gradient background definition object](#gradients).                                           |
 | icon      | String    | Toolbar icon provided as a string from the [Eva Icons](https://akveo.github.io/eva-icons/#/)     |
