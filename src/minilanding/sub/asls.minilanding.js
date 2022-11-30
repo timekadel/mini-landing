@@ -37,7 +37,7 @@ export default {
       icon: "flash-outline",
       title: "Embedded Solutions For Show Control.",
       subtitle: "ASLS' <b>CueOS</b> designed for <b>Arm® Cortex-M4</b> Microcontrollers provides built-in show control features such as multi-protocol <b>Cue triggering</b>, diverse <b>control outputs</b> and show programmation through <b>web interface</b>.",
-      hero: "/images/chip-branded.png",
+      hero: "/images/asls_xs.png",
       cta: [{
           title: "Protocol",
           filled: false,

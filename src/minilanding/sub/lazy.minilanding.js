@@ -20,7 +20,7 @@ export default {
       cta: [{
           title: "next feature",
           filled: false,
-          to: "#Control"
+          to: "#API"
         },
         {
           title: "browse docs",
@@ -72,7 +72,7 @@ export default {
       cta: [{
           title: "Back To Top",
           filled: false,
-          to: "#Store"
+          to: "#ORM"
         },
         {
           title: "browse docs",
