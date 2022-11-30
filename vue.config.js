@@ -21,29 +21,11 @@ module.exports = {
           template: '/public/index.html',
           title: "Timé Kadel's portfolio",
           keywords: "Timé, Kadel, timekadel, portfolio, roomz, roomz.tk, asls",
-          description: `Hi, my name is Timé Kadel, I'm an engineer in electronics and Information Technology who enjoys working on a various range of Innovative technologies and projects.`,
+          description: `Hi, my name is Timé Kadel, I'm an engineer in electronics and Information Technology who enjoys working on Innovative technologies and projects.`,
           url: "https://timekadel.com",
-          image: "/images/tk.svg"
+          image: "/images/tk.png"
         }
         return args
       })
-  },
-  /*configureWebpack: (config) => {
-    config.plugins = [
-      ...config.plugins,
-      new HtmlWebpackPlugin({
-        // template: 'index.tmp.html',
-        template: '/public/index.html',
-        title: "Timé Kadel's portfolio",
-        description: `
-          Hi, my name is Timé Kadel, 
-          I'm an engineer inElectronics 
-          and Information Technology 
-          who enjoys working on a various range 
-          of Innovative technologies and projects.`,
-        url: "https://timekadel.com",
-        image: "/images/tk.svg"
-      }),
-    ]
-  }*/
+  }
 }
