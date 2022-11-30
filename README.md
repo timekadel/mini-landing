@@ -1,6 +1,27 @@
+
+
 # What is MiniLanding ?
 
 MiniLanding is a minimalistic vue.js/tailwind.css based static landing page generator. Its no-code approach allows for quick and simple landing page generation.
+
+- [What is MiniLanding ?](#what-is-minilanding-)
+- [Installation](#installation)
+  - [Start Environment locally](#start-environment-locally)
+  - [Build For Production](#build-for-production)
+- [Configuration](#configuration)
+  - [Main Page](#main-page)
+  - [Sub Pages](#sub-pages)
+  - [Assets](#assets)
+  - [Page Object Configuration](#page-object-configuration)
+    - [Title](#title)
+    - [Sections](#sections)
+      - [Gradients](#gradients)
+      - [CTA](#cta)
+    - [Footer](#footer)
+      - [Footer Sections](#footer-sections)
+      - [Social](#social)
+    - [Contact Form](#contact-form)
+
 
 # Installation
 
