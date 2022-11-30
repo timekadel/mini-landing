@@ -1,11 +1,5 @@
-import asls from "./asls.minilanding"
-import roomz from "./roomz.minilanding"
-import lazy from "./lazy.minilanding"
-import ml from "./ml.minilanding"
+import subpage1 from "./subpage.minilanding"
 
 export default {
-  asls,
-  roomz,
-  lazy,
-  ml
+  subpage1,
 }
